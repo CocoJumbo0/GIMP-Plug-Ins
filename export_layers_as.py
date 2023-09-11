@@ -4,17 +4,15 @@ import os
 from gimpfu import *
 
 #every layer except background should be off before running script
+#gimp file should also be saved prior running script
 def export_visible(image, drawable):
-    count = 1
-    file_extension = '.jpeg'
+    count = 1 #exported image file count
+    file_extension = '.jpeg' #exported image file extension
 
-    #gets whole directory of current opened gimp file.
-    #Note: api claims that I need to use g_free()
-    currentDirectory = pdb.gimp_image_get_filename(image)
-    #gets gimp file name
-    filename = pdb.gimp_image_get_name(image)
+    currentDirectory = image.filename
+    filename = image.name 
 
-    #removes filename and adds new folder
+    #replaces filename with a new folder
     #Please dont make your filename the same as your directory or folder lol
     currentDirectory = currentDirectory.replace(filename, '', 1)
     currentDirectory += 'exported'
@@ -29,28 +27,29 @@ def export_visible(image, drawable):
 
     try:        
         for layer in image.layers:
-            if pdb.gimp_item_get_name(layer) == 'Background':
+            if layer.name == 'Background':
                 break
 
-            pdb.gimp_item_set_visible(layer, True)
+            layer.visible = True
 
             newfilename = filename + '-' + str(count) + file_extension
             count += 1
             newDir = currentDirectory + '\\' + newfilename
-            
-            new_image = pdb.gimp_image_duplicate(image)
-            temp_layer = pdb.gimp_image_merge_visible_layers(new_image, CLIP_TO_IMAGE)
-            pdb.gimp_file_save(new_image, temp_layer, newDir, newfilename)
-            pdb.gimp_image_delete(new_image)
 
-            pdb.gimp_item_set_visible(layer, False)
+            new_image = pdb.gimp_image_duplicate(image)
+            temp_layer = new_image.merge_visible_layers(CLIP_TO_IMAGE)
+            pdb.gimp_file_save(new_image, temp_layer, newDir, newfilename)
+            gimp.delete(temp_layer)
+            gimp.delete(new_image)
+
+            layer.visible = False
             pdb.gimp_message(newfilename)
               
-        pdb.gimp_message("success! exported " + str(count-1) + " images to " + newDir + "!")
+        pdb.gimp_message("success! exported " + str(count-1) + " images to " + currentDirectory + "!")
     
     except Exception as e:
         pdb.gimp_message(e.args[0])
-
+    
     return
 
 
