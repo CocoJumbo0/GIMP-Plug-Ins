@@ -1,7 +1,11 @@
 from gimpfu import *
 
-#copy visible layers to a new file, if mask exist, copy the mask too
-def to_new_image(image, drawable):    
+def to_new_image(image, drawable):
+    """
+    copy visible layers to a new file
+    if mask exists, copy the mask too
+    """
+    
     layers = [] #list of active layers
 
     try:

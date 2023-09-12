@@ -1,9 +1,12 @@
 #! /usr/bin/env python
 
 from gimpfu import *
-
-#Rotates all visible layers 90 degrees 
+ 
 def rotate90Degrees(image, drawable):
+    """
+    Rotates all visible layers by 90 degrees
+    """
+    
     layers = []
     listAllVisible(image, layers)
 

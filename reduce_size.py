@@ -2,8 +2,12 @@
 
 from gimpfu import *
 
-#will also center layers onto canvas
 def reduce_size(image, drawable):
+    """
+    Reduces every visible layer by some factor (currently by 1.3)
+    Additionally will also center layers
+    """
+    
     y_pos = 0
     reduceFactor = 1.30
 

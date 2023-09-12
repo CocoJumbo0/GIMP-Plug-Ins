@@ -3,6 +3,10 @@
 from gimpfu import *
 
 def center_elements(image, drawable):
+    """
+    Centers every element to the center of the image/canvas
+    """
+    
     x_pos = 0
     y_pos = 0
     layers = [] #list of active layers

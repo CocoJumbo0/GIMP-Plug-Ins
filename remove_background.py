@@ -4,6 +4,10 @@ from gimpfu import *
 import gimpcolor
 
 def remove_white_background(image, drawable):
+    """
+    (WIP) Removes any white background of images to make them transparent
+
+    """
     layers = []
     listAllVisible(image, layers)
     try:
