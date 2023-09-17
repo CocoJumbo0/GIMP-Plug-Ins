@@ -1,34 +1,29 @@
 #! /usr/bin/env python
 
+import os, sys
 from gimpfu import *
+
+#required to import module item_util
+me = os.path.abspath(sys.argv[0])
+mydir = os.path.dirname(me)
+sys.path.insert(0, mydir)
+
+import item_util
 
 def center_elements(image, drawable):
     """
-    Centers every element to the center of the image/canvas
+    Centers every active element to the center of the image/canvas
     """
-    
-    x_pos = 0
-    y_pos = 0
     layers = [] #list of active layers
+
     try:
-        listAllVisible(image, layers)
+        item_util.listAllVisible(image, layers)
         for layer in layers:
-            x_pos = image.width / 2 - layer.width / 2
-            y_pos = image.height / 2 - layer.height / 2
-            layer.set_offsets(x_pos, y_pos)
-            
+            item_util.center_layer(image, layer)     
     except Exception as e:
         pdb.gimp_message(e.args[0])
 
     return
-
-
-def listAllVisible(parent, outputList):
-    for layer in parent.layers:
-        if pdb.gimp_layer_get_visible(layer):
-            outputList.append(layer)
-            if pdb.gimp_item_is_group(layer):
-                listAllVisible(layer, outputList)
 
 
 register(

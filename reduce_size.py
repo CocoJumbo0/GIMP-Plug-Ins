@@ -1,6 +1,14 @@
 #! /usr/bin/env python
 
+import os, sys
 from gimpfu import *
+
+#required to import module item_util
+me = os.path.abspath(sys.argv[0])
+mydir = os.path.dirname(me)
+sys.path.insert(0, mydir)
+
+import item_util
 
 def reduce_size(image, drawable):
     """
@@ -8,34 +16,22 @@ def reduce_size(image, drawable):
     Additionally will also center layers
     """
     
-    y_pos = 0
+    #TODO: take in this value as a parameter from GUI
     reduceFactor = 1.30
 
-    #get every visible layer
-    layers = []
-    listAllVisible(image, layers)
+    layers = [] #list of active layers
     try:
+        item_util.listAllVisible(image, layers)
         for layer in layers:
             pdb.gimp_layer_scale(layer, layer.width/reduceFactor, layer.height/reduceFactor, False)
-            
+
             #center the image
-            x_pos = image.width / 2 - layer.width / 2
-            y_pos = image.height / 2 - layer.height / 2
-            layer.set_offsets(x_pos, y_pos)
+            item_util.center_layer(image, layer)
 
     except Exception as e:
         pdb.gimp_message(e.args[0])
 
     return
-
-
-def listAllVisible(parent, outputList):
-    for layer in parent.layers:
-        if pdb.gimp_layer_get_visible(layer):
-            outputList.append(layer)
-            if pdb.gimp_item_is_group(layer):
-                listAllVisible(layer, outputList)
-
 
 register(
     "Reduce_Size",
