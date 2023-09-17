@@ -1,16 +1,26 @@
+#! /usr/bin/env python
+
+import os, sys
 from gimpfu import *
+
+#required to import module item_util
+me = os.path.abspath(sys.argv[0])
+mydir = os.path.dirname(me)
+sys.path.insert(0, mydir)
+
+import item_util
 
 def to_new_image(image, drawable):
     """
-    copy visible layers to a new file
-    if mask exists, copy the mask too
+    copy visible layers and add them to a new image
+    if a mask exists on a layer, copy the mask too
     """
     
     layers = [] #list of active layers
 
     try:
         #get every active layer
-        listAllVisible(image, layers)
+        item_util.listAllVisible(image, layers)
 
         #create new image and insert blank layer
         newImage = gimp.Image(image.width, image.height, RGB)
@@ -48,21 +58,14 @@ def to_new_image(image, drawable):
     return
 
 
-def listAllVisible(parent, outputList):
-    for layer in parent.layers:
-        if pdb.gimp_layer_get_visible(layer):
-            outputList.append(layer)
-            if pdb.gimp_item_is_group(layer):
-                listAllVisible(layer, outputList)
-
 register(
-    "Layers_To_New_File",
-    "Takes visible layers and copys them to new file",
-    "Copy layers to new file",
+    "Layers_To_New_Image",
+    "Takes visible layers and copies them to a new image",
+    "Copy layers to new image",
     "Sophia Lilmohan",
     "Sophia Lilmohan",
     "2023",
-    "<Image>/Functionality/Layers_To_New_File",
+    "<Image>/Functionality/Layers_To_New_Image",
     "*",
     [],
     [],
