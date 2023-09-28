@@ -47,7 +47,8 @@ def to_new_image(image, drawable):
                 maskChannel = layer.mask
 
                 pdb.gimp_channel_combine_masks(mask, maskChannel, 2, 0, 0)
-    
+
+        newImage.remove_layer(newLayer)
         gimp.Display(newImage)
         gimp.displays_flush()
         pdb.gimp_selection_none(image)
