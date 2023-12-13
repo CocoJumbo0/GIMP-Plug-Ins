@@ -2,6 +2,9 @@
 
 A collection of plug ins made for quick editing in GIMP.
 
+Requirements
+GIMP
+
 Files must be placed in GIMP's plug-in folder to show up in the GUI.
 Usually found under 
 C:\Users\Your_Name\AppData\Roaming\GIMP\2.10\plug-ins
