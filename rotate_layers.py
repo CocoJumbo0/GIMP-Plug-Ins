@@ -9,20 +9,21 @@ mydir = os.path.dirname(me)
 sys.path.insert(0, mydir)
 
 import item_util
-
-def reduce_size(image, drawable, reduce_factor):
+ 
+def rotate_layers(image, drawable):
     """
-    Reduces every visible layer by some factor (currently by 1.3)
-    Additionally will also center layers
+    Rotates all visible layers by 90 degrees
     """
 
     layers = [] #list of active layers
+
     try:
         item_util.listAllVisible(image, layers)
-        for layer in layers:
-            pdb.gimp_layer_scale(layer, layer.width/reduce_factor, layer.height/reduce_factor, False)
 
-            #center the image
+        for layer in layers:
+            pdb.gimp_item_transform_rotate_simple(layer, 0, TRUE, 0, 0)
+
+            #centers layers to keep them visible within frame
             item_util.center_layer(image, layer)
 
     except Exception as e:
@@ -30,20 +31,20 @@ def reduce_size(image, drawable, reduce_factor):
 
     return
 
+
 register(
-    "Reduce_Size",
-    "Reduce layers size by inputed factor",
-    "Reduce layers size",
+    "Rotate_Layers",
+    "Rotate visible elements",
+    "Rotate elements",
     "Sophia Lilmohan",
     "Sophia Lilmohan",
     "2023",
-    "<Image>/Functionality/Reduce_Size",
+    "<Image>/Functionality/Rotate_Layers",
     "*",
     [
-        (PF_FLOAT, "reduce_factor", "reduce_factor:", 1)
+        #(PF_LAYER, "reg", "reg:", None)
     ],
     [],
-    reduce_size)
-
+    rotate_layers)
 
 main()

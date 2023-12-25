@@ -9,21 +9,20 @@ mydir = os.path.dirname(me)
 sys.path.insert(0, mydir)
 
 import item_util
- 
-def rotate90Degrees(image, drawable):
+
+def scale_layers(image, drawable, scale_factor):
     """
-    Rotates all visible layers by 90 degrees
+    Scale every visible layer by some factor
+    Will also center layers
     """
 
     layers = [] #list of active layers
-
     try:
         item_util.listAllVisible(image, layers)
-
         for layer in layers:
-            pdb.gimp_item_transform_rotate_simple(layer, 0, TRUE, 0, 0)
+            pdb.gimp_layer_scale(layer, layer.width/scale_factor, layer.height/scale_factor, False)
 
-            #centers layers to keep them visible within frame
+            #center the image
             item_util.center_layer(image, layer)
 
     except Exception as e:
@@ -31,20 +30,20 @@ def rotate90Degrees(image, drawable):
 
     return
 
-
 register(
-    "Rotate90Degrees",
-    "Rotate visible elements",
-    "Rotate elements",
+    "Scale_Layers",
+    "Scale layers by inputed factor",
+    "Scale all layers",
     "Sophia Lilmohan",
     "Sophia Lilmohan",
     "2023",
-    "<Image>/Functionality/Rotate90Degrees",
+    "<Image>/Functionality/Scale_Layers",
     "*",
     [
-        #(PF_LAYER, "reg", "reg:", None)
+        (PF_FLOAT, "scale_factor", "scale_factor:", 1)
     ],
     [],
-    rotate90Degrees)
+    scale_layers)
+
 
 main()
