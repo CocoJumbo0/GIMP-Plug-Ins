@@ -66,7 +66,7 @@ register(
     "Sophia Lilmohan",
     "Sophia Lilmohan",
     "2023",
-    "<Image>/Functionality/Layers_To_New_Image",
+    "<Image>/Functionality/Exporter/Layers_To_New_Image",
     "*",
     [],
     [],

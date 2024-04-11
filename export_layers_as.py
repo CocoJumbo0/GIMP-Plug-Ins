@@ -68,7 +68,7 @@ register(
     "Sophia Lilmohan",
     "Sophia Lilmohan",
     "2023",
-    "<Image>/Functionality/Export_All_Layers",
+    "<Image>/Functionality/Exporter/Export_All_Layers",
     "*",
     [
         #(PF_FLOAT, "y_pos", "y_pos:", 0)
